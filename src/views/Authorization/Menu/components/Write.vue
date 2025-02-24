@@ -93,7 +93,6 @@ const formSchema = reactive<FormSchema[]>([
                 value: true
               }
             ])
-
             if (formData.parentId === void 0) {
               setValues({
                 component: '#'
@@ -171,7 +170,8 @@ const formSchema = reactive<FormSchema[]>([
   {
     field: 'name',
     label: t('menu.name'),
-    component: 'Input'
+    component: 'Input',
+    
   },
   {
     field: 'meta.icon',

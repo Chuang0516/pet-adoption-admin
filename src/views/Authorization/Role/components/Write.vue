@@ -6,7 +6,7 @@ import { useValidator } from '@/hooks/web/useValidator'
 import { useI18n } from '@/hooks/web/useI18n'
 import { ElTree, ElCheckboxGroup, ElCheckbox } from 'element-plus'
 import { getMenuListApi } from '@/api/menu'
-import { filter, eachTree } from '@/utils/tree'
+import { eachTree } from '@/utils/tree'
 import { findIndex } from '@/utils'
 
 const { t } = useI18n()

@@ -1,6 +1,6 @@
 <script setup lang="tsx">
 import { reactive, ref, unref } from 'vue'
-import { getMenuListApi, saveMenuApi } from '@/api/menu'
+import { getMenuListApi, saveMenuApi, delMenuApi } from '@/api/menu'
 import { useTable } from '@/hooks/web/useTable'
 import { useI18n } from '@/hooks/web/useI18n'
 import { Table, TableColumn } from '@/components/Table'
@@ -13,7 +13,7 @@ import Write from './components/Write.vue'
 import Detail from './components/Detail.vue'
 import { Dialog } from '@/components/Dialog'
 import { BaseButton } from '@/components/Button'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElPopconfirm } from 'element-plus'
 
 const { t } = useI18n()
 
@@ -117,7 +117,13 @@ const tableColumns = reactive<TableColumn[]>([
             <BaseButton type="success" onClick={() => action(row, 'detail')}>
               {t('exampleDemo.detail')}
             </BaseButton>
-            <BaseButton type="danger">{t('exampleDemo.del')}</BaseButton>
+            <ElPopconfirm title="是否确认删除？" onConfirm={() => delMenu(row)}>
+              {{
+                reference: () => (
+                  <BaseButton type="danger" >{t('exampleDemo.del')}</BaseButton>
+                )
+              }}
+            </ElPopconfirm>
           </>
         )
       }
@@ -166,7 +172,6 @@ const AddAction = () => {
 const save = async () => {
   const write = unref(writeRef)
   const formData = await write?.submit()
-  console.log(formData)
   if (formData) {
     saveLoading.value = true
     // 保存菜单
@@ -182,6 +187,18 @@ const save = async () => {
       saveLoading.value = false
     })
   }
+}
+
+// 删除菜单
+const delMenu = async (row: any) => {
+  delMenuApi(row.id).then(res => {
+    if (res.code == 200) {
+      ElMessage({
+          message: res.msg
+        })
+      getList()
+    }
+  })
 }
 </script>
 
